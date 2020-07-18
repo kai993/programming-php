@@ -507,6 +507,85 @@ echo(--$n2 . "\n"); // 8
 
 
 
+### 関数の定義
+
+```php
+function [&] function_name([parameter[, ...]])
+{
+  // 処理
+}
+```
+
+
+
+関数名は大文字小文字は区別されない。
+
+
+
+### 変数のスコープ
+
+* 関数内で定義された変数は関数のパラメータも含めて外部からはアクセスできない。
+* 関数の外部で定義した変数を関数の内部で使うことはできない。
+
+```php
+function foo()
+{
+  $a += 2;
+}
+
+foo();
+echo $a; // Undefiend variable: a
+```
+
+
+
+関数の内部からグローバルスコープにある変数にアクセスする場合は`global`キーワードを使用する
+
+```php
+$a = 3;
+function foo2()
+{
+  global $a;
+  $a += 2;
+}
+
+echo $a . "\n"; // 3
+foo2();
+echo $a . "\n"; // 5
+```
+
+
+
+`global`を使うのは`$GLOBALS`変数内の値への参照を作成するのと同じ
+
+```php
+// 同義
+global $var;
+$var = & $GLOBALS['var'];
+```
+
+
+
+スタティック変数は関数の全ての呼び出しもとで共有される。
+
+関数が最初に呼び出された時に1度だけ初期化が行われる。
+
+```php
+function counter()
+{
+  static $count = 0;
+  return $count++;
+}
+
+for ($i = 0; $i < 10; $i++) {
+  printf("%d\n", counter());
+}
+```
+
+
+
+
+
 ## 文字列
 
 ## 配列
