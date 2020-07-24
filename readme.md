@@ -655,6 +655,33 @@ handleEntertainment(new Job, $callback); // PHP Fatal error:  Uncaught TypeError
 
 
 
+### 返り値
+
+値は1つしか返すことができない。
+
+
+
+値への参照を返す場合
+
+```php
+$names = array("Fred", "Barney", "Wilma", "Betty");
+
+function &findOne($n)
+{
+  global $names;
+
+  return $names[$n];
+}
+
+$person =&  findOne(1);
+$person = "Barnetta";
+print_r($names);
+```
+
+
+
+
+
 ## 文字列
 
 ## 配列
