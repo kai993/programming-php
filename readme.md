@@ -1,4 +1,4 @@
-# PHP
+# プログラミングPHP
 
 * HTMLコンテンツを作ることを主眼として設計されている
 * 主な使用方法は3つ
@@ -584,6 +584,75 @@ for ($i = 0; $i < 10; $i++) {
 
 
 
+### 関数のパラメータ
+
+パラメータを渡す方法は2種類ある。
+
+* 値渡し
+* 参照渡し
+
+
+
+参照渡しはスコープの規則を無視して、関数内から直接変数の値を操作できるようになるが変数のみしか渡すことはできない。
+
+```php
+function doubler(&$value)
+{
+  $value = $value << 1;
+}
+
+$a = 3;
+doubler($a);
+
+echo $a; // 6
+
+# 値を直接渡すことができない
+doubler(10); // PHP Fatal error:  Only variables can be passed by reference
+```
+
+
+
+パラメータのデフォルト値
+
+```php
+function hello($name="anonymous")
+{
+  printf("Hello, %s!\n", $name);
+}
+hello();       // Hello, anonymous!
+hello("mike"); // Hello, mike!
+```
+
+
+
+タイプヒンティング
+
+関数を定義する時に関数のパラメータが特定のインスタンスであることを指定できる。
+
+```php
+class Entertainment {}
+
+class Clown extends Entertainment {}
+
+class Job {}
+
+function handleEntertainment(Entertainment $a, callable $callback = NULL)
+{
+  echo "Handling " . get_class($a) . " fun\n";
+
+  if ($callback !== null) {
+    $callback();
+  }
+}
+
+$callback = function() {
+  // do something
+};
+
+handleEntertainment(new Clown);          // Handling Clown fun
+handleEntertainment(new Job, $callback); // PHP Fatal error:  Uncaught TypeError: Argument 1 passed to handleEntertainment() must be an instance of Entertainment, instance of Job given, called
+```
+
 
 
 ## 文字列
@@ -625,3 +694,4 @@ $ php -S localhost:8080
 ## 参考
 
 [プログラミングPHP 第3版](https://www.oreilly.co.jp/books/9784873116686/)
+
