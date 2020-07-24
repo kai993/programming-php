@@ -703,6 +703,39 @@ $e("hello!"); // Call to undefined function echo()
 
 
 
+### 無名関数
+
+ラムダ関数とも言う。
+
+`usort()`での例
+
+```php
+$array = array("really long string here, boy", "this", "middling length", "larger");
+usort($array, function($a, $b) {
+  return strlen($a) - strlen($b);
+});
+print_r($array);
+```
+
+
+
+関数の束縛するスコープの定義を定義するには`use`を使って定義する。
+
+```php
+$array = array("really long string here, boy", "this", "middling length", "larger");
+$sortOption = 'random';
+usort($array, function($a, $b) use ($sortOption){
+  if ($sortOption == 'random') {
+    return rand(0, 2) - 1;
+  } else {
+    return strlen($a) - strlen($b);
+  }
+});
+print_r($array);
+```
+
+
+
 
 
 ## 文字列
