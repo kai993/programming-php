@@ -663,7 +663,7 @@ handleEntertainment(new Job, $callback); // PHP Fatal error:  Uncaught TypeError
 
 値への参照を返す場合
 
-```php
+```php+HTML
 $names = array("Fred", "Barney", "Wilma", "Betty");
 
 function &findOne($n)
@@ -676,6 +676,29 @@ function &findOne($n)
 $person =&  findOne(1);
 $person = "Barnetta";
 print_r($names);
+```
+
+
+
+### 可変関数
+
+関数名を変数で指定すると適切な関数を呼び出すことが可能。
+
+```php
+function first() { echo "first!\n"; }
+function seconds() { echo "seconds!\n"; }
+function third() { echo "third!\n"; }
+$which = "first";
+$which();
+```
+
+
+
+`echo()`、`isset()`などは変数を使用して呼び出すことはできな。
+
+```php
+$e = "echo";
+$e("hello!"); // Call to undefined function echo() 
 ```
 
 
