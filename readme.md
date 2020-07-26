@@ -925,6 +925,8 @@ print_r($p);
 
 #### var_dump
 
+デバッグの時は`print_r()`よりも`var_dump()`の方が便利。
+
 ```php
 var_dump($a);
 // array(3) {
@@ -960,11 +962,78 @@ var_dump($p);
 
 ### 文字へのアクセス
 
+文字列の位置を指定すると特定の文字にアクセスすることができる。
 
+```php
+$string = 'Hello World';
+$length = strlen($string);
+for ($i = 0; $i < $length; $i++) {
+    printf("%d番目の文字は%sです\n", $i, $string[$i]);
+}
+```
+
+```console
+0番目の文字はHです
+1番目の文字はeです
+2番目の文字はlです
+3番目の文字はlです
+4番目の文字はoです
+5番目の文字は です
+6番目の文字はWです
+7番目の文字はoです
+8番目の文字はrです
+9番目の文字はlです
+10番目の文字はdです
+```
 
 
 
 ### お掃除
+
+ファイル・ユーザーからの入力を受け取ったりした文字列は、きれいにしないといけない。
+
+
+
+空白の除去をするには`trin()`や`rtrim()`、`ltrim()`を使用する。
+
+```php
+$title = "  プログラミング PHP \n";
+$str1 = ltrim($title);
+$str2 = rtrim($title);
+$str3 = trim($title);
+
+printf("%s\n", $str1); // プログラミング PHP\n
+printf("%s\n", $str2); //   プログラミング PHP
+printf("%s\n", $str3); // プログラミング PHP
+
+$record = " Fred\tFlintstone\t35\tWilma\t   \n";
+$record = trim($record, "   \r\n\0\x0B");
+printf("%s\n", $record);
+```
+
+```
+プログラミング PHP 
+
+  プログラミング PHP
+プログラミング PHP
+Fred	Flintstone	35	Wilma
+```
+
+
+
+大文字・小文字を変換するには`strtolower()`と`strtoupper()`を使用する。
+
+`ucfirst()`は最初の文字を大文字に変換し、`ucwords()`は単語の最初の文字を大文字に変換する。
+
+```php
+$string1 = "FRED flinstone";
+$string2 = "barney rubble";
+print(strtolower($string1) . "\n"); // fred flinstone
+print(strtoupper($string2) . "\n"); // BARNEY RUBBLE
+
+print(ucfirst($string2) . "\n"); // Barney rubble
+print(ucwords($string2) . "\n"); // Barney Rubble
+```
 
 
 
