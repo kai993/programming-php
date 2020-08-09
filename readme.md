@@ -1039,6 +1039,12 @@ print(ucwords($string2) . "\n"); // Barney Rubble
 
 ### エンコードとエスケープ
 
+#### HTML
+
+#### URL
+
+#### SQL
+
 
 
 ### 比較
