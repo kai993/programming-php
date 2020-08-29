@@ -91,6 +91,13 @@ PHPではEGPCS情報を格納するために6つのグローバル配列を作�
     環境変数の値を保持する。環境変数の名前が配列のキーとなる
 
 ## サーバーの情報
+`$_SERVER`にはウェブサーバーの情報が数多く含まれている。  
+https://www.php.net/manual/ja/reserved.variables.server.php
+
+* `SCRIPT_NAME` : 現在のスクリプトの名前。ドキュメントルートからの相対パスで表したもの
+* `SERVER_SOFTWARE` : サーバーを識別するための文字列
+* `SERVER_NAME` : 自身のURLを表すためのホスト名、DNS、IPアドレス
+* `SERVER_PROTOCOL` : リクエストプロトコルの名前とリビジョン
 
 ## フォームの処理
 
