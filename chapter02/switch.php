@@ -1,12 +1,25 @@
 <?php
-$name = "sylvie";
+$v = 1;
+switch ($v) {
+  case 1:
+    echo "one\n";
+  case 2:
+    echo "two\n";
+  case 3:
+    echo "three\n";
+  default:
+    echo "four\n";
+}
 
-switch ($name) {
-  case 'sylvie':
-  case 'bruno':
-    print("yes");
+$ranking = 3;
+switch ($ranking) {
+  case 1:
+  case 2:
+  case 3:
+    echo "TOP3\n";
     break;
   default:
-    print("no");
+    echo "out of ranking\n";
     break;
 }
+
