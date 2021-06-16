@@ -13,6 +13,18 @@
 - [キーと値の取得](#%E3%82%AD%E3%83%BC%E3%81%A8%E5%80%A4%E3%81%AE%E5%8F%96%E5%BE%97)
 - [要素の存在チェック](#%E8%A6%81%E7%B4%A0%E3%81%AE%E5%AD%98%E5%9C%A8%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF)
 - [要素の追加・削除](#%E8%A6%81%E7%B4%A0%E3%81%AE%E8%BF%BD%E5%8A%A0%E3%83%BB%E5%89%8A%E9%99%A4)
+- [要素のループ](#%E8%A6%81%E7%B4%A0%E3%81%AE%E3%83%AB%E3%83%BC%E3%83%97)
+- [イテレータ関数](#%E3%82%A4%E3%83%86%E3%83%AC%E3%83%BC%E3%82%BF%E9%96%A2%E6%95%B0)
+- [配列の全ての要素にユーザー定義の関数を適用する](#%E9%85%8D%E5%88%97%E3%81%AE%E5%85%A8%E3%81%A6%E3%81%AE%E8%A6%81%E7%B4%A0%E3%81%AB%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E5%AE%9A%E7%BE%A9%E3%81%AE%E9%96%A2%E6%95%B0%E3%82%92%E9%81%A9%E7%94%A8%E3%81%99%E3%82%8B)
+- [コールバック関数を繰り返し配列に適用し、配列をひとつの値にまとめる](#%E3%82%B3%E3%83%BC%E3%83%AB%E3%83%90%E3%83%83%E3%82%AF%E9%96%A2%E6%95%B0%E3%82%92%E7%B9%B0%E3%82%8A%E8%BF%94%E3%81%97%E9%85%8D%E5%88%97%E3%81%AB%E9%81%A9%E7%94%A8%E3%81%97%E9%85%8D%E5%88%97%E3%82%92%E3%81%B2%E3%81%A8%E3%81%A4%E3%81%AE%E5%80%A4%E3%81%AB%E3%81%BE%E3%81%A8%E3%82%81%E3%82%8B)
+- [値の検索](#%E5%80%A4%E3%81%AE%E6%A4%9C%E7%B4%A2)
+- [ソート](#%E3%82%BD%E3%83%BC%E3%83%88)
+- [配列の和の計算](#%E9%85%8D%E5%88%97%E3%81%AE%E5%92%8C%E3%81%AE%E8%A8%88%E7%AE%97)
+- [配列のマージ](#%E9%85%8D%E5%88%97%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%B8)
+- [2つの配列の差の計算](#2%E3%81%A4%E3%81%AE%E9%85%8D%E5%88%97%E3%81%AE%E5%B7%AE%E3%81%AE%E8%A8%88%E7%AE%97)
+- [フィルタリング](#%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%83%AA%E3%83%B3%E3%82%B0)
+- [和集合](#%E5%92%8C%E9%9B%86%E5%90%88)
+- [Iteratorインターフェイス](#iterator%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%BC%E3%83%95%E3%82%A7%E3%82%A4%E3%82%B9)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -367,3 +379,251 @@ while ($c = current($languages)) {
 // 2はRustです
 // 3はNode.jsです
 ```
+
+## 配列の全ての要素にユーザー定義の関数を適用する
+
+```php
+$printRow = function($value, $key)
+{
+    print("  <tr><td>{$key}</td><td>{$value}</td></tr>\n");
+};
+$person = array('name' => "Fred", 'age' => 35, 'wife' => "Wilma");
+echo "<table border=1>\n";
+array_walk($person, $printRow);
+echo "</table>\n";
+// <table border=1>
+//   <tr><td>name</td><td>Fred</td></tr>
+//   <tr><td>age</td><td>35</td></tr>
+//   <tr><td>wife</td><td>Wilma</td></tr>
+// </table>
+
+// 複数のオプションを渡す場合
+$extraData = array('border' => 2, 'color' => "red");
+$baseArray = array("Ford", "Chrysler", "Volkswagen", "Honda", "Toyota");
+function walkFunction($item, $index, $data)
+{
+    echo "{$item} <- item, then border: {$data['border']}";
+    echo " color->{$data['color']}\n";
+}
+array_walk($baseArray, "walkFunction", $extraData);
+// Ford <- item, then border: 2 color->red
+// Chrysler <- item, then border: 2 color->red
+// Volkswagen <- item, then border: 2 color->red
+// Honda <- item, then border: 2 color->red
+// Toyota <- item, then border: 2 color->red
+```
+
+## コールバック関数を繰り返し配列に適用し、配列をひとつの値にまとめる
+
+```php
+$addItUp = function($runningTotal, $currentValue)
+{
+    echo $runningTotal . " " . $currentValue . "\n";
+    $runningTotal += $currentValue * $currentValue;
+    return $runningTotal;
+};
+$numbers = array(2, 3, 5, 7);
+$total = array_reduce($numbers, $addItUp);
+echo "Total : {$total}\n";
+//  2
+// 4 3
+// 13 5
+// 38 7
+// Total : 87
+```
+
+## 値の検索
+
+- 第3引数にtrueを設定すると型が一致するかどうかも調べられる
+
+```php
+$addresses = array('hoge@mecorp.jp', 'foo@mecorp.jp', 'bar@mecorp.jp', 'spam@spam.com');
+$gotSpam = in_array('spam@spam.com', $addresses);
+$gotMilk = in_array('milk@milk.com', $addresses, true);
+var_dump($gotSpam); // bool(true)
+var_dump($gotMilk); // bool(false)
+```
+
+## ソート
+
+アルファベット昇順
+
+```php
+$names = array('Cath', 'Angela', 'Brad', 'Mira');
+sort($names);
+var_dump($names);
+// array(4) {
+//   [0]=>
+//   string(6) "Angela"
+//   [1]=>
+//   string(4) "Brad"
+//   [2]=>
+//   string(4) "Cath"
+//   [3]=>
+//   string(4) "Mira"
+// }
+```
+
+アルファベット降順
+
+```php
+rsort($names);
+var_dump($names);
+// array(4) {
+//   [0]=>
+//   string(4) "Mira"
+//   [1]=>
+//   string(4) "Cath"
+//   [2]=>
+//   string(4) "Brad"
+//   [3]=>
+//   string(6) "Angela"
+// }
+```
+
+配列の値によるソート
+
+```php
+$logins = array(
+    'njy' => 415,
+    'kt'  => 492,
+    'rl'  => 652,
+    'jht' => 441,
+    'jj'  => 441,
+    'wt'  => 402,
+    'hut' => 309,
+);
+arsort($logins);
+var_dump($logins);
+// array(7) {
+//   ["rl"]=>
+//   int(652)
+//   ["kt"]=>
+//   int(492)
+//   ["jht"]=>
+//   int(441)
+//   ["jj"]=>
+//   int(441)
+//   ["njy"]=>
+//   int(415)
+//   ["wt"]=>
+//   int(402)
+//   ["hut"]=>
+//   int(309)
+// }
+```
+
+## 配列の和の計算
+
+```php
+$scores = array(93, 84, 82);
+echo array_sum($scores) . "\n"; // 259
+```
+
+## 配列のマージ
+
+```php
+$first = array('php', 'ruby', 'python');
+$second = array('go', 'java', 'rust');
+$merged = array_merge($first, $second);
+var_dump($merged);
+// array(6) {
+//   [0]=>
+//   string(3) "php"
+//   [1]=>
+//   string(4) "ruby"
+//   [2]=>
+//   string(6) "python"
+//   [3]=>
+//   string(2) "go"
+//   [4]=>
+//   string(4) "java"
+//   [5]=>
+//   string(4) "rust"
+// }
+
+// マップ
+$mfirst = array('name' => 'Mike', 'age' => 38, 'from' => 'USA');
+$msecond = array('hobby' => 'football', 'age' => 37);
+$mmerged = array_merge($mfirst, $msecond);
+var_dump($mmerged);
+// array(4) {
+//   ["name"]=>
+//   string(4) "Mike"
+//   ["age"]=>
+//   int(37)
+//   ["from"]=>
+//   string(3) "USA"
+//   ["hobby"]=>
+//   string(8) "football"
+// }
+```
+
+## 2つの配列の差の計算
+
+```php
+// a1の値のうち、a2あるいはa3に存在しないものを探す
+$a1 = array('PHP', 'Laravel', 'Composer');
+$a2 = array('Smarty', 'Composer');
+$a3 = array('CodeIgniter', 'CakePHP', 'composer');
+$diff = array_diff($a1, $a2, $a3);
+var_dump($diff);
+// array(2) {
+//   [0]=>
+//   string(3) "PHP"
+//   [1]=>
+//   string(7) "Laravel"
+// }
+```
+
+## フィルタリング
+
+```php
+$isOdd = function ($elem)
+{
+    return $elem % 2;
+};
+$numbers = array(9, 23, 24, 27);
+$odds = array_filter($numbers, $isOdd);
+var_dump($odds);
+// array(3) {
+//   [0]=>
+//   int(9)
+//   [1]=>
+//   int(23)
+//   [3]=>
+//   int(27)
+// }
+```
+
+## 和集合
+- 両方の集合の要素をから重複したものを取り除く
+
+```php
+function arrayUnion($a, $b)
+{
+    $union = array_merge($a, $b);
+    $union = array_unique($union);
+    return $union;
+}
+$a1 = array('php', 'go', 'javascript');
+$a2 = array('scala', 'go', 'ruby');
+$union = arrayUnion($a1, $a2);
+var_dump($union);
+// array(5) {
+//   [0]=>
+//   string(3) "php"
+//   [1]=>
+//   string(2) "go"
+//   [2]=>
+//   string(10) "javascript"
+//   [3]=>
+//   string(5) "scala"
+//   [5]=>
+//   string(4) "ruby"
+// }
+```
+
+## Iteratorインターフェイス
+https://www.php.net/manual/ja/class.iterator.php
+

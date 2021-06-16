@@ -1,6 +1,6 @@
 <?php
 
-function store_array()
+function _array()
 {
     $addresses[0] = 'hoge@mecorp.jp';
     $addresses[1] = 'foo@mecorp.jp';
@@ -121,6 +121,44 @@ function store_array()
         printf("%sは%sです\n", $k, $v);
         next($languages);
     }
+
+    // array_walk()
+    $printRow = function($value, $key)
+    {
+        print("  <tr><td>{$key}</td><td>{$value}</td></tr>\n");
+    };
+    $person = array('name' => "Fred", 'age' => 35, 'wife' => "Wilma");
+    echo "<table border=1>\n";
+    array_walk($person, $printRow);
+    echo "</table>\n";
+
+    // 複数のオプションを渡す場合は3番目の引数に配列を渡す
+    $extraData = array('border' => 2, 'color' => "red");
+    $baseArray = array("Ford", "Chrysler", "Volkswagen", "Honda", "Toyota");
+    function walkFunction($item, $index, $data)
+    {
+        echo "{$item} <- item, then border: {$data['border']}";
+        echo " color->{$data['color']}\n";
+    }
+    array_walk($baseArray, "walkFunction", $extraData);
+
+    // array_reduce
+    $addItUp = function($runningTotal, $currentValue)
+    {
+        echo $runningTotal . " " . $currentValue . "\n";
+        $runningTotal += $currentValue * $currentValue;
+        return $runningTotal;
+    };
+    $numbers = array(2, 3, 5, 7);
+    $total = array_reduce($numbers, $addItUp);
+    echo "Total : {$total}\n";
+
+    // in_array()
+    $addresses = array('hoge@mecorp.jp', 'foo@mecorp.jp', 'bar@mecorp.jp', 'spam@spam.com');
+    $gotSpam = in_array('spam@spam.com', $addresses);
+    $gotMilk = in_array('milk@milk.com', $addresses, true);
+    var_dump($gotSpam); // bool(true)
+    var_dump($gotMilk); // bool(false)
 }
 
 function tf($v)
@@ -128,9 +166,81 @@ function tf($v)
     return $v ? 'T' : 'F';
 }
 
+function _sort()
+{
+    // sort()
+    $names = array('Cath', 'Angela', 'Brad', 'Mira');
+    sort($names);
+    var_dump($names);
+    rsort($names);
+    var_dump($names);
+
+    $logins = array(
+        'njy' => 415,
+        'kt'  => 492,
+        'rl'  => 652,
+        'jht' => 441,
+        'jj'  => 441,
+        'wt'  => 402,
+        'hut' => 309,
+    );
+    arsort($logins);
+    var_dump($logins);
+}
+
+function processing_whole()
+{
+    // 配列の和の計算
+    $scores = array(93, 84, 82);
+    echo array_sum($scores) . "\n"; // 259
+
+    // 配列のマージ
+    $first = array('php', 'ruby', 'python');
+    $second = array('go', 'java', 'rust');
+    $merged = array_merge($first, $second);
+    var_dump($merged);
+
+    $mfirst = array('name' => 'Mike', 'age' => 38, 'from' => 'USA');
+    $msecond = array('hobby' => 'football', 'age' => 37);
+    $mmerged = array_merge($mfirst, $msecond);
+    var_dump($mmerged);
+
+    $a1 = array('PHP', 'Laravel', 'Composer');
+    $a2 = array('Smarty', 'Composer');
+    $a3 = array('CodeIgniter', 'CakePHP', 'composer');
+    $diff = array_diff($a1, $a2, $a3);
+    var_dump($diff);
+
+    // フィルタリング
+    $isOdd = function ($elem)
+    {
+        return $elem % 2;
+    };
+    $numbers = array(9, 23, 24, 27);
+    $odds = array_filter($numbers, $isOdd);
+    var_dump($odds);
+}
+
+function usage_array()
+{
+    function arrayUnion($a, $b)
+    {
+        $union = array_merge($a, $b);
+        $union = array_unique($union);
+        return $union;
+    }
+    $a1 = array('php', 'go', 'javascript');
+    $a2 = array('scala', 'go', 'ruby');
+    $union = arrayUnion($a1, $a2);
+    var_dump($union);
+}
+
 function main()
 {
-    store_array();
+    // _array();
+    //_sort();
+    // processing_whole();
+    usage_array();
 }
 
 main();
